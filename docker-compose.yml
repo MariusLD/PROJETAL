@@ -28,4 +28,4 @@ services:
       # HTTP management UI
       - '15672:15672'
     env_file:
-      - ./rabbitmq.env
+      - ./back/rabbitmq.env

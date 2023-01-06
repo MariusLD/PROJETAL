@@ -19,6 +19,10 @@ import { ConfigModule } from '@nestjs/config';
       username : 'postgres',
       password : 'postgres',
       database: 'postgres',
+      /*
+      type: 'sqlite',
+      database: 'mydatabase.db',
+      */
       entities: [
         User,
         Association

@@ -1,0 +1,31 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: postgres
+  web:
+    image: nest-webproject-run
+    command: npm run start:dev
+    depends_on:
+      - db
+  nginx:
+    build: 
+      context: ./nginx
+    ports:
+     - 80:80
+    depends_on:
+     - web
+  rabbitmq3:
+    container_name: "rabbitmq"
+    image: rabbitmq:3.8-management-alpine
+    ports:
+      # AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
+    env_file:
+      - ./rabbitmq.env

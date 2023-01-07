@@ -1,24 +1,37 @@
 version: "3"
 services:
-  db:
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-      POSTGRES_PASSWORD: postgres
-  web:
-    image: nest-webproject-run
-    command: npm run start:dev
-    depends_on:
-      - db
   nginx:
     build: 
       context: ./nginx
+    container_name: nginx
     ports:
      - 80:80
     depends_on:
-     - web
+     - back
+     - pgadmin
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+  pgadmin:
+    image: dpage/pgadmin4:6
+    container_name: pgadmin
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+  back:
+    build:
+      context: ./back
+    container_name: back
+    restart: always
+    depends_on:
+    - db
   rabbitmq3:
     container_name: "rabbitmq"
     image: rabbitmq:3.8-management-alpine

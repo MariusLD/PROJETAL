@@ -13,7 +13,9 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+RUN npm run build
+
 EXPOSE 3000
 
 # Start the server using the production build
-CMD [ "node", "run", "start" ]
+CMD [ "node", "dist/main.js" ]

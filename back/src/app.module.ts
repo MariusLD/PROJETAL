@@ -13,16 +13,17 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [ConfigModule.forRoot(),
    TypeOrmModule.forRoot({
+      /*
       type: 'postgres',
       host: 'db',
       port : 5432,
       username : 'postgres',
       password : 'postgres',
       database: 'postgres',
-      /*
+      *////*
       type: 'sqlite',
       database: 'mydatabase.db',
-      */
+      //*/
       entities: [
         User,
         Association

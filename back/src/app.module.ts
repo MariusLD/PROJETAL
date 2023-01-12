@@ -8,10 +8,12 @@ import { Association } from './associations/association.entity';
 import { User } from './users/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
-import { ConfigModule } from '@nestjs/config';
+import { RabbitMQService } from './rabbit-mq/rabbit-mq.service';
+import { RabbitMQController } from './rabbit-mq/rabbit-mq.controller';
+import { RabbitMQModule } from './rabbit-mq/rabbit-mq.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(),
+  imports: [
    TypeOrmModule.forRoot({
       /*
       type: 'postgres',
@@ -30,7 +32,7 @@ import { ConfigModule } from '@nestjs/config';
       ],
       synchronize: true,
     }),
-    UsersModule, AssociationsModule, AuthModule, RolesModule],
+    UsersModule, AssociationsModule, AuthModule, RolesModule, RabbitMQModule],
   controllers: [AppController],
   providers: [AppService],
 })

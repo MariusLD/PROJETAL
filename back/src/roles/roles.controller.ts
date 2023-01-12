@@ -1,10 +1,11 @@
 import { Controller, Get, Body, Post, Param, Put, Delete, HttpStatus, HttpException } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from './role.entity';
 import { RoleInput } from './role.input';
 import { RoleUpdate } from './role.update';
 import { RolesService } from './roles.service';
 
+@ApiTags('roles')
 @Controller('roles')
 export class RolesController {
     constructor(

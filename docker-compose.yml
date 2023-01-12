@@ -1,14 +1,17 @@
 version: "3"
 services:
-  nginx:
+  rvproxy:
     build: 
-      context: ./nginx
-    container_name: nginx
+      context: ./rvproxy
+    container_name: rvproxy
     ports:
      - 80:80
     depends_on:
      - back
      - pgadmin
+     - front
+     - rabbitmq
+     - maildev
   db:
     image: postgres:15-alpine
     container_name: db
@@ -31,14 +34,32 @@ services:
     container_name: back
     restart: always
     depends_on:
-    - db
-  rabbitmq3:
-    container_name: "rabbitmq"
-    image: rabbitmq:3.8-management-alpine
+      - db
+      - rabbitmq
+  front:
+    build:
+      context: ./front
+    container_name: front
+    restart: always
+    depends_on:
+      - back
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+  quarkus:
+    build:
+      context: ./quarkus
+    mem_limit: 8g
+    container_name: quarkus
+    restart: always
+    depends_on:
+      - rabbitmq
     ports:
-      # AMQP protocol port
-      - '5672:5672'
-      # HTTP management UI
-      - '15672:15672'
-    env_file:
-      - ./back/rabbitmq.env
+      - 8888:8888
+  maildev:
+    image: maildev/maildev:2.0.5
+    container_name: maildev

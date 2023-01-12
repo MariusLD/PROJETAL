@@ -59,7 +59,7 @@ services:
       - back
     ports:
       - 4200:4200
-    command: ng serve --open
+    command: ng serve
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: rabbitmq
@@ -74,7 +74,7 @@ services:
       context: ./quarkus
       dockerfile: Dockerfile.dev
     volumes:
-      - ./quarkus/src:/code/src
+      - ./quarkus/src/main/:/usr/src/app/src/main
     container_name: quarkus
     restart: always
     depends_on:

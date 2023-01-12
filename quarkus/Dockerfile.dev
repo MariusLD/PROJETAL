@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 COPY mvnw .
 COPY .mvn ./.mvn
 COPY pom.xml .
+COPY src/main/resources src/main/resources
 
 RUN ./mvnw compile
 

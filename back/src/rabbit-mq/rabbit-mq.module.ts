@@ -7,13 +7,13 @@ import { RabbitMQService } from './rabbit-mq.service';
   imports: [
     ClientsModule.register([
       {
-        name: 'RABBIT_MQ',
+        name: 'mail-service',
         transport: Transport.RMQ,
         options: {
           urls: [
             'amqp://rabbitmq:5672',
           ],
-          queue: 'fdp',
+          queue: 'mail',
           queueOptions: {
             durable: false
           },

@@ -12,15 +12,18 @@ import io.vertx.core.json.JsonObject;
 @ApplicationScoped
 public class RmqConsumer {
 
-    public static String msg = "Hello from RMQ";
-
-    @Incoming("fdp")
+    @Incoming("mail")
     public void consume(byte[] msg) {
         JsonObject obj = new JsonObject(new String(msg, StandardCharsets.UTF_8));
-        String datas = obj.getString("data");
-        JsonObject data = new JsonObject(datas);
-        Log.info("Received: " + data.toString());
-        RmqConsumer.msg = data.toString();
+        JsonObject data = new JsonObject(obj.getString("data"));
+        
+        MailSender.send(
+            data.getString("from"),
+            data.getString("to"),
+            data.getString("subject"),
+            data.getString("body")
+        );
+        
     }
     
 }

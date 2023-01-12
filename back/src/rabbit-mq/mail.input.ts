@@ -2,31 +2,30 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class MailInput {
     @ApiProperty({
-        description: 'The lastname',
-        example: "Doe",
+        description: 'The receiver',
+        example: "john.doe@gmail.com",
         type: String,
     })
-    public lastname: string;
+    public to: string;
 
     @ApiProperty({
-        description: 'The firstname',
-        example: "John",
+        description: 'The sender',
+        example: "admin@les-petits-filous.fr",
         type: String,
     })
-    public firstname: string;
+    public from: string;
 
     @ApiProperty({
-        description: 'The age',
-        minimum: 18,
-        default: 18,
-        type: Number,
+        description: 'The subject',
+        example: "You have been invited for an event",
+        type: String,
     })
-    public age: number;
+    public subject: string;
 
     @ApiProperty({
-        description: 'The password',
-        example: 'p9z&Vj@MO0#diu4An7c',
+        description: 'The body',
+        example: "You should come, it will be fun.\n\nRegards,\nAdmin",
         type : String
     })
-    public password : string;
+    public body : string;
 }

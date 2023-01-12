@@ -1,0 +1,76 @@
+version: "3"
+services:
+  rvproxy:
+    build: 
+      context: ./rvproxy
+      dockerfile: Dockerfile.prod
+    container_name: rvproxy
+    ports:
+     - 80:80
+    depends_on:
+     - back
+     - pgadmin
+     - front
+     - rabbitmq
+     - maildev
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+  pgadmin:
+    image: dpage/pgadmin4:6
+    container_name: pgadmin
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    depends_on:
+      - db
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile.prod
+    container_name: back
+    restart: always
+    depends_on:
+      - db
+      - rabbitmq
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.prod
+    container_name: front
+    restart: always
+    depends_on:
+      - back
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+  quarkus:
+    build:
+      context: ./quarkus
+      dockerfile: Dockerfile.prod
+    mem_limit: 8g
+    container_name: quarkus
+    restart: always
+    depends_on:
+      - rabbitmq
+      - maildev
+  maildev:
+    image: maildev/maildev:2.0.5
+    container_name: maildev
+    restart: always
+    environment:
+      - MAILDEV_INCOMING_USER=quarkus
+      - MAILDEV_INCOMING_PASS=quarkus
+      - MAILDEV_WEB_USER=maildev
+      - MAILDEV_WEB_PASS=maildev

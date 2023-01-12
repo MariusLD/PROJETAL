@@ -1,0 +1,11 @@
+FROM eclipse-temurin:17-alpine
+
+WORKDIR /usr/src/app
+
+COPY mvnw .
+COPY .mvn ./.mvn
+COPY pom.xml .
+
+RUN ./mvnw compile
+
+EXPOSE 8888

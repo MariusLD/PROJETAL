@@ -5,11 +5,16 @@ import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class RabbitMQService {
     constructor(
-        @Inject('RABBIT_MQ') private readonly client: ClientProxy,
+        @Inject('mail-service') private readonly client: ClientProxy,
       ) {}
-      public async send(pattern: string, input: any): Promise<any> { 
-        this.client.send(pattern, JSON.stringify(input))
-          .subscribe((data) => {return data});
+      public async send(pattern: string, to: string, from: string, subject: string, body: string): Promise<any> { 
+        this.client.send(
+          pattern, JSON.stringify({
+            to: to,
+            from: from, 
+            subject: subject,
+            body: body
+          })).subscribe((data) => {return data});
       }
 
 }

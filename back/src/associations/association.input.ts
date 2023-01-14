@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class AssociationInput {
     @ApiProperty({
         description: 'The list of users\'s ids',
-        example: "[0, 1, 2]",
+        example: "[1, 2, 3]",
         type: [Number],
     })
     public idUsers: number[];

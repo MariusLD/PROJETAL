@@ -22,7 +22,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_PORT=5432
     volumes:
-      - ./volumes/.db:/var/lib/postgresql/data
+      - ./volumes/db:/var/lib/postgresql/data
   pgadmin:
     image: dpage/pgadmin4:6
     container_name: pgadmin
@@ -36,7 +36,7 @@ services:
     ports:
       - 5050:5050
     volumes:
-      - ./volumes/.pgadmin:/var/lib/pgadmin
+      - ./volumes/pgadmin:/var/lib/pgadmin
   back:
     build:
       context: ./back
@@ -92,6 +92,8 @@ services:
     container_name: maildev
     restart: always
     environment:
+      - MAILDEV_INCOMING_USER=quarkus
+      - MAILDEV_INCOMING_PASS=quarkus
       - MAILDEV_WEB_USER=maildev
       - MAILDEV_WEB_PASS=maildev
     ports:

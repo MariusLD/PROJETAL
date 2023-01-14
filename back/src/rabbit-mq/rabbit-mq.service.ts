@@ -7,11 +7,11 @@ export class RabbitMQService {
     constructor(
         @Inject('mail-service') private readonly client: ClientProxy,
       ) {}
-      public async send(pattern: string, to: string, from: string, subject: string, body: string): Promise<any> { 
+      public async send(pattern: string, from: string, to: string, subject: string, body: string): Promise<any> { 
         this.client.send(
           pattern, JSON.stringify({
-            to: to,
-            from: from, 
+            from: from,
+            to: to, 
             subject: subject,
             body: body
           })).subscribe((data) => {return data});

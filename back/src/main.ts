@@ -17,7 +17,6 @@ async function bootstrap() {
     .setDescription('Descriptions des APIs de la gestion des associations')
     .setVersion('1.0')
     .addBearerAuth()
-    .addServer('http://localhost:3000')
     .addServer('http://localhost/api')
     .build();
   const document = SwaggerModule.createDocument(app, config);

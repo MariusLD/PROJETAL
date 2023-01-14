@@ -15,6 +15,7 @@ export class RabbitMQController {
         description: 'The message has been sent.'
     })
     public async create(@Body() input: MailInput): Promise<any>{
+        console.warn(input);
         return this.service.send('mail', input.from, input.to, input.subject, input.body);
     }
 }

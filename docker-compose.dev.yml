@@ -21,6 +21,8 @@ services:
       - POSTGRES_USERNAME=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_PORT=5432
+    volumes:
+      - ./volumes/.db:/var/lib/postgresql/data
   pgadmin:
     image: dpage/pgadmin4:6
     container_name: pgadmin
@@ -59,7 +61,7 @@ services:
       - back
     ports:
       - 4200:4200
-    command: ng serve
+    command: ng serve --host 0.0.0.0
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: rabbitmq
@@ -74,22 +76,20 @@ services:
       context: ./quarkus
       dockerfile: Dockerfile.dev
     volumes:
-      - ./quarkus/src/main/:/usr/src/app/src/main
+      - ./quarkus/src/main:/usr/src/app/src/main
     container_name: quarkus
     restart: always
     depends_on:
       - rabbitmq
       - maildev
     ports:
-      - 8888:8888
+      - 8080:8080
     command: ./mvnw quarkus:dev
   maildev:
     image: maildev/maildev:2.0.5
     container_name: maildev
     restart: always
     environment:
-      - MAILDEV_INCOMING_USER=quarkus
-      - MAILDEV_INCOMING_PASS=quarkus
       - MAILDEV_WEB_USER=maildev
       - MAILDEV_WEB_PASS=maildev
     ports:

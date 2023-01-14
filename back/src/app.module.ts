@@ -15,17 +15,16 @@ import { RabbitMQModule } from './rabbit-mq/rabbit-mq.module';
 @Module({
   imports: [
    TypeOrmModule.forRoot({
-      /*
       type: 'postgres',
       host: 'db',
       port : 5432,
       username : 'postgres',
       password : 'postgres',
       database: 'postgres',
-      *////*
+      /*
       type: 'sqlite',
       database: 'mydatabase.db',
-      //*/
+      */
       entities: [
         User,
         Association

@@ -1,5 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RabbitMQModule } from '../rabbit-mq/rabbit-mq.module';
 import { UsersModule } from '../users/users.module';
 import { Association } from './association.entity';
 import { AssociationsController } from './associations.controller';
@@ -10,7 +11,9 @@ import { AssociationsService } from './associations.service';
   providers: [AssociationsService],
   imports: [
     forwardRef(() => UsersModule),
-    TypeOrmModule.forFeature([Association])],
+    TypeOrmModule.forFeature([Association]),
+    RabbitMQModule
+  ],
   exports: [AssociationsService]
 })
 export class AssociationsModule {}

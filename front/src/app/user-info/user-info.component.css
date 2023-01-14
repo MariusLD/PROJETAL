@@ -17,6 +17,11 @@
   margin: 10px 0;
 }
 
+.item-asso {
+  margin-top: 19px;
+  margin-left: 20px;
+}
+
 .mat-card-footer {
   background-color: #eee;
   display: flex;
@@ -26,4 +31,12 @@
 
 .mat-progress-bar {
   width: 80%;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  text-align: left;
+  margin-top: 15px;
 }

@@ -3,8 +3,8 @@ import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { MailInput } from './mail.input';
 import { RabbitMQService } from './rabbit-mq.service';
 
-@ApiTags('rabbit-mq')
-@Controller('rabbit-mq')
+@ApiTags('mail')
+@Controller()
 export class RabbitMQController {
     constructor(
         private service: RabbitMQService,

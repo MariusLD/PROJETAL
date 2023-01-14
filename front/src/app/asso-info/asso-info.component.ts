@@ -9,6 +9,10 @@ import { ApiHelperService } from '../service/api-helper.service';
 })
 export class AssoInfoComponent {
   name!: string;
+  writingMail: boolean = false;
+
+  subject!: string;
+  mailContent!: string;
 
   listUser: any[] = [];
 
@@ -28,5 +32,24 @@ export class AssoInfoComponent {
 
   goToUserInfo(id: number): void {
     this.router.navigateByUrl('/user/' + id);
+  }
+
+  writeMail(): void {
+    this.writingMail = true;
+  }
+
+  sendMail(): void {
+    this.api.post({endpoint: '/associations/' + this.route.snapshot.paramMap.get('id') + '/mail',
+      data: {subject: this.subject, body: this.mailContent}})
+      .then(response => {
+        this.writingMail = false;
+        this.subject = '';
+        this.mailContent = '';
+      })
+      .catch(error => +error.status === 401 ? alert('Token Expired') : console.log('Error'));
+  }
+
+  cancelMail(): void {
+    this.writingMail = false;
   }
 }

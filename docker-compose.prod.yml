@@ -18,9 +18,12 @@ services:
     container_name: db
     restart: always
     environment:
-      - POSTGRES_USERNAME=postgres
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_PORT=5432
+    volumes:
+      - ./volumes/db:/var/lib/postgresql/data
+    user: 1000:1000
   pgadmin:
     image: dpage/pgadmin4:6
     container_name: pgadmin
@@ -31,6 +34,8 @@ services:
       - PGADMIN_LISTEN_PORT=5050
     depends_on:
       - db
+    volumes:
+      - ./volumes/pgadmin:/var/lib/pgadmin
   back:
     build:
       context: ./back

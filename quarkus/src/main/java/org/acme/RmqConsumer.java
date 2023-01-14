@@ -29,6 +29,11 @@ public class RmqConsumer {
             data.getString("subject"),
             data.getString("body")
         );
+
+        stage.subscribe().with(
+            x -> Log.info("Mail sent"),
+            x -> Log.error("Mail not sent", x)
+        );
     }
 
     private Uni<Void> sendMail(String from, String to, String subject, String body) {

@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, 
 import { ApiCreatedResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { AssociationsService } from '../associations/associations.service';
 import { User } from '../users/user.entity';
+import { AssoMailInput } from './asso-mail.input';
 import { Association } from './association.entity';
 import { AssociationInput } from './association.input';
 
@@ -69,4 +70,14 @@ export class AssociationsController {
     public async deleteById(@Param('id') parameter: number): Promise<boolean> {
         return this.service.delete(parameter);
     }
+
+    @Post(':id/mail')
+    @ApiParam({
+        name: 'id',
+        description: 'The id of the association sending the mail'
+    })
+    public async sendMail(@Param('id') parameter: number, @Body() input: AssoMailInput): Promise<void> {
+        this.service.sendMail(parameter, input.subject, input.body);
+    }
+
 }

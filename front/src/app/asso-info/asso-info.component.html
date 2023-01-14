@@ -1,24 +1,61 @@
 <app-nav></app-nav>
-<mat-card class="card">
-  <br>
-  <mat-card-title>{{name}}</mat-card-title>
-  <mat-card-content>
+
+<ng-container *ngIf="writingMail; then mail; else normal">
+</ng-container>
+
+<ng-template #normal>
+  <mat-card class="card">
     <br>
-    <mat-card-title>Users</mat-card-title>
-    <ng-container *ngFor="let user of listUser">
-      <div class="item-asso">
-        {{user.firstname}}
-        {{user.lastname}}
+    <mat-card-title>{{name}}</mat-card-title>
+    <mat-card-content>
+      <br>
+      <mat-card-title>Members</mat-card-title>
+      <ng-container *ngFor="let user of listUser">
+        <div class="flex-container">
+          <div>
+            <button mat-fab color="primary" (click)="goToUserInfo(+user.id)">
+              <mat-icon>info</mat-icon>
+            </button>
+          </div>
+          <div class="item-asso">
+            {{user.firstname}} {{user.lastname}}
+          </div>
+        </div>
+      </ng-container>
+      <br>
+      <div>
+        <button class="button-mail" (click)="writeMail()">Send Mail</button>
+      </div>
+    </mat-card-content>
+    <br>
+    <mat-card-footer>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+</ng-template>
+
+<ng-template #mail>
+  <mat-card class="card">
+    <br>
+    <mat-card-title>{{name}}</mat-card-title>
+    <mat-card-content>
+      <br>
+      <mat-card-title>Mail</mat-card-title>
+      <br>
+      <div class="menu">
+        <button class="button-menu" (click)="sendMail()">Send</button>
+        <button class="button-menu" (click)="cancelMail()">Cancel</button>
+      </div>
+      <div class="label-input">
+        <input [(ngModel)]="subject" type="text" id="subject" placeholder="Subject" />
       </div>
       <div>
-        <button mat-fab color="primary" (click)="goToUserInfo(+user.id)">
-          <mat-icon>info</mat-icon>
-        </button>
+        <textarea class="textarea-mail" [(ngModel)]="mailContent" placeholder="Write your mail here"></textarea>
       </div>
-    </ng-container>
-  </mat-card-content>
-  <br>
-  <mat-card-footer>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </mat-card-footer>
-</mat-card>
+    </mat-card-content>
+    <br>
+    <mat-card-footer>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>  
+</ng-template>

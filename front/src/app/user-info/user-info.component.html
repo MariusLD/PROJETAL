@@ -14,15 +14,17 @@
       Age: {{age}}
     </div>
     <br>
-    <mat-card-title>Associations</mat-card-title>
+    <mat-card-title>Member of</mat-card-title>
     <ng-container *ngFor="let asso of listAsso">
-      <div class="item-asso">
-        {{asso.name}}
-      </div>
-      <div>
-        <button mat-fab color="primary" (click)="goToAssoInfo(+asso.id)">
-          <mat-icon>info</mat-icon>
-        </button>
+      <div class="flex-container">
+        <div>
+          <button mat-fab color="primary" (click)="goToAssoInfo(+asso.id)">
+            <mat-icon>info</mat-icon>
+          </button>
+        </div>
+        <div class="item-asso">
+          {{asso.name}}
+        </div>
       </div>
     </ng-container>
   </mat-card-content>

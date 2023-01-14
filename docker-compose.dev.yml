@@ -35,6 +35,8 @@ services:
       - db
     ports:
       - 5050:5050
+    volumes:
+      - ./volumes/.pgadmin:/var/lib/pgadmin
   back:
     build:
       context: ./back

@@ -8,18 +8,18 @@ import { Association } from './associations/association.entity';
 import { User } from './users/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
-import { RabbitMQService } from './rabbit-mq/rabbit-mq.service';
-import { RabbitMQController } from './rabbit-mq/rabbit-mq.controller';
 import { RabbitMQModule } from './rabbit-mq/rabbit-mq.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-   TypeOrmModule.forRoot({
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'db',
       port : 5432,
-      username : 'postgres',
-      password : 'postgres',
+      username : process.env.PG_USER,
+      password : process.env.PG_PASS,
       database: 'postgres',
       /*
       type: 'sqlite',

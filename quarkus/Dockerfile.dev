@@ -10,5 +10,3 @@ COPY src/main/resources src/main/resources
 ENV QUARKUS_LAUNCH_DEVMODE=true
 
 RUN ./mvnw compile
-
-EXPOSE 8080

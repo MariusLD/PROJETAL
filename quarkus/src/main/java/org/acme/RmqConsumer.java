@@ -21,7 +21,9 @@ public class RmqConsumer {
     public void consume(byte[] msg) {
         JsonObject obj = new JsonObject(new String(msg, StandardCharsets.UTF_8));
         JsonObject data = new JsonObject(obj.getString("data"));
+        
         Log.info(data);
+        Log.info(data.getString("from"));
 
         Uni<Void> stage = sendMail(
             data.getString("from"),

@@ -1,10 +1,11 @@
 version: "3"
 services:
   rvproxy:
-    build: 
-      context: ./rvproxy
-      dockerfile: Dockerfile.prod
+    image: nginx:1-alpine
+    volumes:
+      - ./rvproxy/nginx.prod.conf:/etc/nginx/nginx.conf
     container_name: rvproxy
+    restart: always
     ports:
      - 80:80
     depends_on:
@@ -15,33 +16,39 @@ services:
      - maildev
   db:
     image: postgres:15-alpine
+    volumes:
+      - ./db:/var/lib/postgresql/data
     container_name: db
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASS}
       - POSTGRES_PORT=5432
-    volumes:
-      - ./volumes/db:/var/lib/postgresql/data
     user: 1000:1000
   pgadmin:
     image: dpage/pgadmin4:6
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
     container_name: pgadmin
     restart: always
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASS}
       - PGADMIN_LISTEN_PORT=5050
     depends_on:
       - db
-    volumes:
-      - ./volumes/pgadmin:/var/lib/pgadmin
   back:
     build:
       context: ./back
       dockerfile: Dockerfile.prod
     container_name: back
     restart: always
+    environment:
+      - RMQ_USER=${RMQ_USER}
+      - RMQ_PASS=${RMQ_PASS}
+      - RMQ_VHOST=${RMQ_VHOST}
+      - PG_USER=${PG_USER}
+      - PG_PASS=${PG_PASS}
     depends_on:
       - db
       - rabbitmq
@@ -58,8 +65,9 @@ services:
     container_name: rabbitmq
     restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RMQ_PASS}
+      - RABBITMQ_DEFAULT_VHOST=${RMQ_VHOST}
   quarkus:
     build:
       context: ./quarkus
@@ -67,6 +75,12 @@ services:
     mem_limit: 8g
     container_name: quarkus
     restart: always
+    environment:
+      - RMQ_USER=${RMQ_USER}
+      - RMQ_PASS=${RMQ_PASS}
+      - RMQ_VHOST=${RMQ_VHOST}
+      - MD_USER=${MD_IN_USER}
+      - MD_PASS=${MD_IN_PASS}
     depends_on:
       - rabbitmq
       - maildev
@@ -75,7 +89,7 @@ services:
     container_name: maildev
     restart: always
     environment:
-      - MAILDEV_INCOMING_USER=quarkus
-      - MAILDEV_INCOMING_PASS=quarkus
-      - MAILDEV_WEB_USER=maildev
-      - MAILDEV_WEB_PASS=maildev
+      - MAILDEV_INCOMING_USER=${MD_IN_USER}
+      - MAILDEV_INCOMING_PASS=${MD_IN_PASS}
+      - MAILDEV_WEB_USER=${MD_WEB_USER}
+      - MAILDEV_WEB_PASS=${MD_WEB_PASS}
